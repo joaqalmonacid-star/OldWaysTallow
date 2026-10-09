@@ -104,7 +104,7 @@ a { color: inherit; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: var(--header-h); }
 
 .brand { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; }
-.brand__mark { width: 40px; height: 40px; border-radius: 11px; box-shadow: var(--shadow-sm); }
+.brand__mark { width: 40px; height: 40px; object-fit: contain; border-radius: 11px; box-shadow: var(--shadow-sm); }
 .brand__text { display: flex; flex-direction: column; line-height: 1; }
 .brand__text strong { font-family: var(--font-display); font-size: 1.18rem; font-weight: 700; }
 .brand__text small { font-size: 0.66rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); margin-top: 3px; }
@@ -289,7 +289,7 @@ a { color: inherit; }
 .site-footer { background: #2b1c12; color: #d9c8b5; padding: 3rem 0 1.5rem; }
 .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .footer-brand { display: flex; gap: 0.85rem; align-items: flex-start; }
-.footer-brand img { border-radius: 10px; }
+.footer-brand img { width: 36px; height: 36px; object-fit: contain; border-radius: 10px; }
 .footer-brand strong { color: #fff; font-family: var(--font-display); font-size: 1.15rem; }
 .footer-brand p { margin: 0.15rem 0 0; font-size: 0.88rem; color: #b8a695; }
 .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
