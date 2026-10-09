@@ -5,77 +5,44 @@
   "use strict";
 
   /* ------------------- Configuración ------------------- */
-  const CURRENCY = { locale: "en-US", code: "USD" }; // cambia aquí la moneda
+  const CURRENCY = { locale: "es-CL", code: "CLP" }; // cambia aquí la moneda
   const STORAGE_KEY = "oldways-cart-v1";
   const CONTACT_EMAIL = "hola@oldwaystallow.com";
 
   /* ------------------- Catálogo ------------------- */
   const PRODUCTS = [
     {
-      id: "sebo-res",
-      name: "Sebo de Res",
-      desc: "Nuestro clásico. Sabor neutro, ideal para freír y rostizar a temperatura alta.",
-      price: 14.9,
-      weight: "500 g",
+      id: "grasa-res",
+      name: "Grasa de Res",
+      desc: "Nuestra receta original. Sabor neutro y punto de humeo alto, ideal para freír y rostizar.",
+      price: 3990,
+      weight: "150 g",
       rating: 4.9,
       reviews: 214,
       badge: "Más vendido",
-      image: "assets/img/sebo-res.svg",
+      image: "assets/img/grasa-res.jpg",
     },
     {
-      id: "manteca-cerdo",
-      name: "Manteca de Cerdo",
-      desc: "Cremosa y versátil. Perfecta para masas, empanadas y sofritos tradicionales.",
-      price: 11.9,
-      weight: "500 g",
+      id: "grasa-res-oregano",
+      name: "Grasa de Res (Orégano)",
+      desc: "Con orégano seleccionado. Un aroma mediterráneo perfecto para carnes, papas y panes.",
+      price: 3990,
+      weight: "150 g",
       rating: 4.8,
       reviews: 168,
       badge: null,
-      image: "assets/img/manteca-cerdo.svg",
+      image: "assets/img/grasa-res-oregano.jpg",
     },
     {
-      id: "grasa-pato",
-      name: "Grasa de Pato",
-      desc: "Sabor intenso y untuoso. El secreto para papas y confits de restaurante.",
-      price: 19.9,
-      weight: "300 g",
-      rating: 5.0,
-      reviews: 92,
-      badge: "Premium",
-      image: "assets/img/grasa-pato.svg",
-    },
-    {
-      id: "sebo-cordero",
-      name: "Sebo de Cordero",
-      desc: "Notas suaves a pastizal. Excelente para carnes y guisos de cocción lenta.",
-      price: 16.9,
-      weight: "500 g",
-      rating: 4.7,
-      reviews: 76,
-      badge: null,
-      image: "assets/img/sebo-cordero.svg",
-    },
-    {
-      id: "manteca-iberico",
-      name: "Manteca Ibérica",
-      desc: "De cerdo de bellota. Aroma profundo para platos con carácter y repostería.",
-      price: 21.9,
-      weight: "400 g",
+      id: "grasa-res-merken",
+      name: "Grasa de Res (Merkén)",
+      desc: "Con merkén ahumado. El toque picante y aromático de la cocina mapuche en tus platos.",
+      price: 3990,
+      weight: "150 g",
       rating: 4.9,
-      reviews: 58,
-      badge: "Edición limitada",
-      image: "assets/img/manteca-iberico.svg",
-    },
-    {
-      id: "sebo-ahumado",
-      name: "Sebo de Res Ahumado",
-      desc: "Ahumado lento con madera de nogal. Da un giro inesperado a tus asados.",
-      price: 17.9,
-      weight: "500 g",
-      rating: 4.8,
-      reviews: 121,
-      badge: null,
-      image: "assets/img/sebo-ahumado.svg",
+      reviews: 92,
+      badge: "Nuevo",
+      image: "assets/img/grasa-res-merken.jpg",
     },
   ];
 
