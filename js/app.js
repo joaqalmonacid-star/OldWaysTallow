@@ -221,9 +221,31 @@
     return cart
       .map((it) => {
         const p = byId(it.id);
-        return `- ${p.name} (${p.weight}) x${it.qty} — ${money(p.price * it.qty)}`;
+        return `${p.name} (${p.weight}) x${it.qty} — ${money(p.price * it.qty)}`;
       })
       .join("\n");
+  }
+
+  function makeOrderNumber() {
+    const d = new Date();
+    const ymd =
+      d.getFullYear() +
+      String(d.getMonth() + 1).padStart(2, "0") +
+      String(d.getDate()).padStart(2, "0");
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    return `OW-${ymd}-${rand}`;
+  }
+
+  function showModal() {
+    if (!orderModal) return;
+    if (overlay) {
+      overlay.hidden = false;
+      requestAnimationFrame(() => overlay.classList.add("is-open"));
+    }
+    orderModal.hidden = false;
+    requestAnimationFrame(() => orderModal.classList.add("is-open"));
+    orderModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
   }
 
   function openOrderForm() {
@@ -233,21 +255,22 @@
     // Oculta el panel del carrito pero mantiene el fondo oscurecido.
     drawer?.classList.remove("is-open");
     drawer?.setAttribute("aria-hidden", "true");
-    if (overlay) {
-      overlay.hidden = false;
-      requestAnimationFrame(() => overlay.classList.add("is-open"));
-    }
 
     orderForm?.reset();
     if (orderForm) orderForm.hidden = false;
     if (orderSuccess) orderSuccess.hidden = true;
     if (orderTotalEl) orderTotalEl.textContent = money(cartTotal());
+    setOrderSubmitting(false);
 
-    orderModal.hidden = false;
-    requestAnimationFrame(() => orderModal.classList.add("is-open"));
-    orderModal.setAttribute("aria-hidden", "false");
-    document.body.classList.add("no-scroll");
+    showModal();
     setTimeout(() => $("#fieldName")?.focus(), 260);
+  }
+
+  function showOrderSuccess(orderNumber) {
+    if (orderNumberOut) orderNumberOut.textContent = orderNumber || "—";
+    if (orderForm) orderForm.hidden = true;
+    if (orderSuccess) orderSuccess.hidden = false;
+    showModal();
   }
 
   function closeOrderForm() {
@@ -265,62 +288,54 @@
     const btn = $("#orderSubmit");
     if (!btn) return;
     btn.disabled = on;
-    btn.textContent = on ? "Enviando…" : "Enviar pedido";
+    btn.innerHTML = on ? "Enviando…" : "Enviar pedido";
   }
 
-  async function submitOrder(e) {
-    e.preventDefault();
-    if (cart.length === 0) return;
+  // Se ejecuta justo antes del POST nativo a FormSubmit: rellena los campos
+  // ocultos con el número de orden, el resumen y el mensaje de agradecimiento.
+  function prepareOrder(e) {
+    if (cart.length === 0) { e.preventDefault(); return; }
+    if (!orderForm.checkValidity()) { e.preventDefault(); orderForm.reportValidity(); return; }
 
-    const form = e.currentTarget;
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-
-    const data = Object.fromEntries(new FormData(form).entries());
+    const orderNumber = makeOrderNumber();
     const total = money(cartTotal());
     const lines = orderLines();
+    const email = $("#fieldEmail")?.value || "";
+
+    if (fsOrderNumber) fsOrderNumber.value = orderNumber;
+    if (fsOrderLines) fsOrderLines.value = lines;
+    if (fsTotal) fsTotal.value = total;
+    if (fsSubject) fsSubject.value = `Orden ${orderNumber} — ${email}`;
+    if (fsAutoresponse) {
+      fsAutoresponse.value =
+        `¡Gracias por tu compra en OldWays Tallow!\n\n` +
+        `Hemos recibido tu pedido correctamente.\n\n` +
+        `Número de orden: ${orderNumber}\n\n` +
+        `Resumen del pedido:\n${lines}\n\n` +
+        `Total: ${total}\n\n` +
+        `Nos pondremos en contacto contigo para coordinar la entrega.\n\nEquipo OldWays Tallow`;
+    }
+    if (fsNext) {
+      const back =
+        location.protocol.startsWith("http")
+          ? `${location.origin}${location.pathname}?pedido=ok&orden=${encodeURIComponent(orderNumber)}`
+          : "";
+      fsNext.value = back;
+      fsNext.disabled = !back;
+    }
 
     setOrderSubmitting(true);
-    let sent = false;
-    try {
-      const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: "Nuevo pedido — OldWays Tallow",
-          _template: "table",
-          _captcha: "false",
-          Nombre: data.nombre,
-          Correo: data.correo,
-          Teléfono: data.telefono,
-          Pedido: lines,
-          Total: total,
-        }),
-      });
-      const json = await res.json().catch(() => ({}));
-      sent = res.ok && String(json.success) === "true";
-    } catch {
-      sent = false;
-    }
-    setOrderSubmitting(false);
+  }
 
-    if (sent) {
-      if (orderForm) orderForm.hidden = true;
-      if (orderSuccess) orderSuccess.hidden = false;
-      cart = [];
-      renderCart();
-      saveCart();
-      toast("¡Pedido enviado! Gracias por tu compra.");
-      return;
-    }
-
-    // Respaldo sin servidor: abre el correo del cliente con todo el detalle.
-    const body =
-      `Nuevo pedido — OldWays Tallow\n\n` +
-      `Nombre: ${data.nombre}\nCorreo: ${data.correo}\nTeléfono: ${data.telefono}\n\n` +
-      `Pedido:\n${lines}\n\nTotal: ${total}\n\n` +
-      `Esta información será utilizada para localizar y asignar su pedido.`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Nuevo pedido — OldWays Tallow")}&body=${encodeURIComponent(body)}`;
-    toast("Abriendo tu correo para enviar el pedido…");
+  function handleOrderReturn() {
+    const params = new URLSearchParams(location.search);
+    if (params.get("pedido") !== "ok") return;
+    const orderNumber = params.get("orden") || "";
+    cart = [];
+    renderCart();
+    saveCart();
+    showOrderSuccess(orderNumber);
+    history.replaceState(null, "", location.pathname + location.hash);
   }
 
   /* ------------------- UI: drawer, toast, menú ------------------- */
@@ -331,6 +346,13 @@
   const orderForm = $("#orderForm");
   const orderSuccess = $("#orderSuccess");
   const orderTotalEl = $("#orderTotal");
+  const orderNumberOut = $("#orderNumberOut");
+  const fsSubject = $("#fsSubject");
+  const fsNext = $("#fsNext");
+  const fsAutoresponse = $("#fsAutoresponse");
+  const fsOrderNumber = $("#fsOrderNumber");
+  const fsOrderLines = $("#fsOrderLines");
+  const fsTotal = $("#fsTotal");
   let toastTimer;
 
   function openCart() {
@@ -405,7 +427,7 @@
   $("#orderClose")?.addEventListener("click", closeOrderForm);
   $("#orderCancel")?.addEventListener("click", closeOrderForm);
   $("#orderSuccessClose")?.addEventListener("click", closeOrderForm);
-  orderForm?.addEventListener("submit", submitOrder);
+  orderForm?.addEventListener("submit", prepareOrder);
 
   overlay?.addEventListener("click", () => {
     if (orderModal && orderModal.classList.contains("is-open")) closeOrderForm();
@@ -455,5 +477,6 @@
   renderCart();
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+  handleOrderReturn();
   onScroll();
 })();

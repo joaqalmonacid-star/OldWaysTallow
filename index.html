@@ -271,22 +271,31 @@
     </header>
 
     <div class="modal__body">
-      <form class="order-form" id="orderForm">
+      <form class="order-form" id="orderForm" action="https://formsubmit.co/beeftallow17@gmail.com" method="POST">
+        <!-- Configuración de FormSubmit -->
+        <input type="hidden" name="_subject" id="fsSubject" value="Nuevo pedido — OldWays Tallow" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" id="fsNext" value="" disabled />
+        <input type="hidden" name="_autoresponse" id="fsAutoresponse" value="" />
+        <input type="hidden" name="Número de orden" id="fsOrderNumber" value="" />
+        <input type="hidden" name="Pedido" id="fsOrderLines" value="" />
+        <input type="hidden" name="Total" id="fsTotal" value="" />
+
         <p class="order-form__intro">Completa tus datos y enviaremos el pedido. Total: <strong id="orderTotal">$0</strong></p>
 
         <label class="field">
           <span class="field__label">Nombre</span>
-          <input class="field__input" id="fieldName" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required />
+          <input class="field__input" id="fieldName" name="Nombre" type="text" autocomplete="name" placeholder="Tu nombre" required />
         </label>
 
         <label class="field">
           <span class="field__label">Correo</span>
-          <input class="field__input" id="fieldEmail" name="correo" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required />
+          <input class="field__input" id="fieldEmail" name="email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required />
         </label>
 
         <label class="field">
           <span class="field__label">Teléfono</span>
-          <input class="field__input" id="fieldPhone" name="telefono" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required />
+          <input class="field__input" id="fieldPhone" name="Teléfono" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required />
         </label>
 
         <p class="order-form__legal">Esta información será utilizada para localizar y asignar su pedido.</p>
@@ -299,6 +308,8 @@
         <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
         <h3>¡Pedido enviado!</h3>
         <p>Gracias, recibimos tu pedido. Nos pondremos en contacto para coordinar la entrega.</p>
+        <p class="order-success__num">Número de orden: <strong id="orderNumberOut">—</strong></p>
+        <p class="order-success__hint">Te enviamos un correo de confirmación a la dirección que indicaste.</p>
         <button type="button" class="btn btn--primary btn--block" id="orderSuccessClose">Cerrar</button>
       </div>
     </div>

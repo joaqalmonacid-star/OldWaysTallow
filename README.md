@@ -35,14 +35,20 @@ OldWaysTallow/
 - El contador del encabezado muestra la cantidad total de unidades.
 - **Finalizar pedido** abre un formulario que pide **Nombre, Correo y Teléfono**
   (con la nota: *"Esta información será utilizada para localizar y asignar su pedido."*).
-- Al enviarlo, el pedido completo (productos, cantidades, total y datos del
-  cliente) se manda a **beeftallow17@gmail.com** mediante [FormSubmit](https://formsubmit.co).
-- Si el envío automático falla (o el servicio no está activado), se abre el
-  correo del cliente con todo el detalle ya escrito, como respaldo.
+- Al enviarlo se genera un **número de orden** (`OW-AAAAMMDD-XXXX`) y se envían
+  **dos correos** mediante [FormSubmit](https://formsubmit.co):
+  1. A **beeftallow17@gmail.com**: recepción de la orden, con el número de orden,
+     el detalle del pedido y el **correo del cliente** (queda como *Responder a*).
+  2. Al **correo que escribió el cliente**: un agradecimiento automático con el
+     número de orden y el resumen de su compra.
+- Tras enviar, el sitio vuelve a la página y muestra la confirmación con el número de orden.
 
-> **Importante (una sola vez):** la primera vez, FormSubmit envía un correo de
-> *"Activate Form"* a **beeftallow17@gmail.com**. Hay que abrirlo y pulsar el
-> enlace para activar el envío automático. Hasta entonces, se usa el respaldo por correo.
+> **Importante (una sola vez):** FormSubmit envía un correo de *"Activate Form"* a
+> **beeftallow17@gmail.com**. Hay que abrirlo y pulsar el enlace para activar el envío.
+>
+> El envío automático usa el **POST nativo con reCAPTCHA activado**, porque la
+> auto-respuesta de FormSubmit **no funciona con AJAX ni con el reCAPTCHA desactivado**.
+> Por eso el sitio debe verse **servido por internet** (GitHub Pages), no como archivo local.
 
 ## Personalización
 
