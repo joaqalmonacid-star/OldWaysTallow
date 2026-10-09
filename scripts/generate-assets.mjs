@@ -1,6 +1,6 @@
 // Genera las ilustraciones SVG (productos, hero, logo, favicon).
 // Uso: node scripts/generate-assets.mjs
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -101,8 +101,18 @@ function logoSvg() {
 </svg>
 `;
 }
-writeFileSync(join(outDir, "logo.svg"), logoSvg(), "utf8");
-writeFileSync(join(outDir, "favicon.svg"), logoSvg(), "utf8");
+// Logo: si existe el PNG del usuario se incrusta en un SVG; si no, se usa el ícono vectorial.
+const pngLogoPath = join(outDir, "logo_OldWays.png");
+if (existsSync(pngLogoPath)) {
+  const dataUri = "data:image/png;base64," + readFileSync(pngLogoPath).toString("base64");
+  const embedded = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 141" width="150" height="141" role="img" aria-label="OldWays Tallow"><image width="150" height="141" href="${dataUri}"/></svg>\n`;
+  writeFileSync(join(outDir, "logo_OldWays.svg"), embedded, "utf8");
+  writeFileSync(join(outDir, "logo.svg"), embedded, "utf8");
+  writeFileSync(join(outDir, "favicon.svg"), embedded, "utf8");
+} else {
+  writeFileSync(join(outDir, "logo.svg"), logoSvg(), "utf8");
+  writeFileSync(join(outDir, "favicon.svg"), logoSvg(), "utf8");
+}
 
 // Patrón / textura sutil para fondo
 writeFileSync(
