@@ -28,12 +28,21 @@ OldWaysTallow/
 - **Proceso** — cómo se elabora la grasa, del campo al tarro.
 - **Contacto** — llamada a la acción y datos de contacto.
 
-## Carrito
+## Carrito y pedido
 
 - El botón **Agregar** de cada producto suma el ítem al carrito.
 - El carrito se guarda en `localStorage`, por lo que se conserva al recargar.
 - El contador del encabezado muestra la cantidad total de unidades.
-- **Finalizar pedido** abre el correo del cliente con el detalle del pedido.
+- **Finalizar pedido** abre un formulario que pide **Nombre, Correo y Teléfono**
+  (con la nota: *"Esta información será utilizada para localizar y asignar su pedido."*).
+- Al enviarlo, el pedido completo (productos, cantidades, total y datos del
+  cliente) se manda a **beeftallow17@gmail.com** mediante [FormSubmit](https://formsubmit.co).
+- Si el envío automático falla (o el servicio no está activado), se abre el
+  correo del cliente con todo el detalle ya escrito, como respaldo.
+
+> **Importante (una sola vez):** la primera vez, FormSubmit envía un correo de
+> *"Activate Form"* a **beeftallow17@gmail.com**. Hay que abrirlo y pulsar el
+> enlace para activar el envío automático. Hasta entonces, se usa el respaldo por correo.
 
 ## Personalización
 

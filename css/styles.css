@@ -342,6 +342,53 @@ a { color: inherit; }
 .cart-total strong { font-family: var(--font-display); font-size: 1.6rem; color: var(--brand); }
 .cart-note { font-size: 0.78rem; color: var(--muted); margin: 0 0 0.4rem; }
 
+/* ---------- Modal: finalizar pedido ---------- */
+.modal {
+  position: fixed; top: 50%; left: 50%; z-index: 120;
+  width: min(440px, calc(100% - 2rem));
+  max-height: 90dvh; overflow-y: auto;
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translate(-50%, -46%) scale(0.98);
+  transition: opacity .28s ease, transform .28s cubic-bezier(.22,.61,.36,1);
+}
+.modal.is-open { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.modal__head {
+  position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--line);
+  background: var(--surface); border-radius: var(--radius) var(--radius) 0 0;
+}
+.modal__head h2 { font-size: 1.28rem; margin: 0; }
+.modal__body { padding: 1.3rem; }
+
+.order-form { display: flex; flex-direction: column; gap: 0.9rem; }
+.order-form__intro { font-size: 0.92rem; color: var(--muted); margin: 0; }
+.order-form__intro strong { font-family: var(--font-display); font-size: 1.18rem; color: var(--brand); }
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field__label { font-size: 0.82rem; font-weight: 600; }
+.field__input {
+  font: inherit; font-size: 0.95rem;
+  padding: 0.72rem 0.85rem;
+  color: var(--ink); background: var(--surface);
+  border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.field__input::placeholder { color: #aa9a89; }
+.field__input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(217, 154, 63, 0.25); }
+
+.order-form__legal { font-size: 0.76rem; color: var(--muted); line-height: 1.45; margin: 0.1rem 0 0.3rem; }
+
+.order-success { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.35rem; padding: 0.8rem 0.4rem; }
+.order-success svg { color: #3f6b3a; }
+.order-success h3 { font-size: 1.3rem; margin: 0.3rem 0 0; }
+.order-success p { font-size: 0.92rem; color: var(--muted); }
+.order-success .btn { margin-top: 0.7rem; }
+
 /* ---------- Toast ---------- */
 .toast {
   position: fixed; left: 50%; bottom: 26px; z-index: 130;

@@ -7,7 +7,7 @@
   /* ------------------- Configuración ------------------- */
   const CURRENCY = { locale: "es-CL", code: "CLP" }; // cambia aquí la moneda
   const STORAGE_KEY = "oldways-cart-v1";
-  const CONTACT_EMAIL = "hola@oldwaystallow.com";
+  const CONTACT_EMAIL = "beeftallow17@gmail.com";
 
   /* ------------------- Catálogo ------------------- */
   const PRODUCTS = [
@@ -216,24 +216,121 @@
     toast("Carrito vaciado");
   }
 
-  function checkout() {
-    if (cart.length === 0) return;
-    const lines = cart
+  /* ------------------- Pedido / formulario ------------------- */
+  function orderLines() {
+    return cart
       .map((it) => {
         const p = byId(it.id);
         return `- ${p.name} (${p.weight}) x${it.qty} — ${money(p.price * it.qty)}`;
       })
       .join("\n");
-    const body = `¡Hola OldWays Tallow!\n\nQuiero hacer este pedido:\n\n${lines}\n\nTotal: ${money(cartTotal())}\n\nMi nombre: \nDirección de entrega: \n`;
-    const subject = "Nuevo pedido — OldWays Tallow";
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    toast("Abriendo tu correo para confirmar el pedido…");
+  }
+
+  function openOrderForm() {
+    if (cart.length === 0) return;
+    if (!orderModal) return;
+
+    // Oculta el panel del carrito pero mantiene el fondo oscurecido.
+    drawer?.classList.remove("is-open");
+    drawer?.setAttribute("aria-hidden", "true");
+    if (overlay) {
+      overlay.hidden = false;
+      requestAnimationFrame(() => overlay.classList.add("is-open"));
+    }
+
+    orderForm?.reset();
+    if (orderForm) orderForm.hidden = false;
+    if (orderSuccess) orderSuccess.hidden = true;
+    if (orderTotalEl) orderTotalEl.textContent = money(cartTotal());
+
+    orderModal.hidden = false;
+    requestAnimationFrame(() => orderModal.classList.add("is-open"));
+    orderModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
+    setTimeout(() => $("#fieldName")?.focus(), 260);
+  }
+
+  function closeOrderForm() {
+    if (!orderModal) return;
+    orderModal.classList.remove("is-open");
+    orderModal.setAttribute("aria-hidden", "true");
+    setTimeout(() => { orderModal.hidden = true; }, 280);
+    overlay?.classList.remove("is-open");
+    if (drawer) drawer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("no-scroll");
+    setTimeout(() => { if (overlay) overlay.hidden = true; }, 300);
+  }
+
+  function setOrderSubmitting(on) {
+    const btn = $("#orderSubmit");
+    if (!btn) return;
+    btn.disabled = on;
+    btn.textContent = on ? "Enviando…" : "Enviar pedido";
+  }
+
+  async function submitOrder(e) {
+    e.preventDefault();
+    if (cart.length === 0) return;
+
+    const form = e.currentTarget;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    const total = money(cartTotal());
+    const lines = orderLines();
+
+    setOrderSubmitting(true);
+    let sent = false;
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: "Nuevo pedido — OldWays Tallow",
+          _template: "table",
+          _captcha: "false",
+          Nombre: data.nombre,
+          Correo: data.correo,
+          Teléfono: data.telefono,
+          Pedido: lines,
+          Total: total,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      sent = res.ok && String(json.success) === "true";
+    } catch {
+      sent = false;
+    }
+    setOrderSubmitting(false);
+
+    if (sent) {
+      if (orderForm) orderForm.hidden = true;
+      if (orderSuccess) orderSuccess.hidden = false;
+      cart = [];
+      renderCart();
+      saveCart();
+      toast("¡Pedido enviado! Gracias por tu compra.");
+      return;
+    }
+
+    // Respaldo sin servidor: abre el correo del cliente con todo el detalle.
+    const body =
+      `Nuevo pedido — OldWays Tallow\n\n` +
+      `Nombre: ${data.nombre}\nCorreo: ${data.correo}\nTeléfono: ${data.telefono}\n\n` +
+      `Pedido:\n${lines}\n\nTotal: ${total}\n\n` +
+      `Esta información será utilizada para localizar y asignar su pedido.`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Nuevo pedido — OldWays Tallow")}&body=${encodeURIComponent(body)}`;
+    toast("Abriendo tu correo para enviar el pedido…");
   }
 
   /* ------------------- UI: drawer, toast, menú ------------------- */
   const drawer = $("#cartDrawer");
   const overlay = $("#overlay");
   const toastEl = $("#toast");
+  const orderModal = $("#orderModal");
+  const orderForm = $("#orderForm");
+  const orderSuccess = $("#orderSuccess");
+  const orderTotalEl = $("#orderTotal");
   let toastTimer;
 
   function openCart() {
@@ -303,12 +400,23 @@
 
   $("#cartButton")?.addEventListener("click", openCart);
   $("#cartClose")?.addEventListener("click", closeCart);
-  overlay?.addEventListener("click", closeCart);
   $("#clearCartButton")?.addEventListener("click", clearCart);
-  $("#checkoutButton")?.addEventListener("click", checkout);
+  $("#checkoutButton")?.addEventListener("click", openOrderForm);
+  $("#orderClose")?.addEventListener("click", closeOrderForm);
+  $("#orderCancel")?.addEventListener("click", closeOrderForm);
+  $("#orderSuccessClose")?.addEventListener("click", closeOrderForm);
+  orderForm?.addEventListener("submit", submitOrder);
+
+  overlay?.addEventListener("click", () => {
+    if (orderModal && orderModal.classList.contains("is-open")) closeOrderForm();
+    else closeCart();
+  });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { closeCart(); closeMenu(); }
+    if (e.key !== "Escape") return;
+    if (orderModal && orderModal.classList.contains("is-open")) closeOrderForm();
+    else closeCart();
+    closeMenu();
   });
 
   /* Menú móvil */

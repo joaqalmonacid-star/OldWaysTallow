@@ -197,7 +197,7 @@
         </div>
         <div class="cta__actions">
           <a href="#productos" class="btn btn--primary">Comprar ahora</a>
-          <a href="mailto:hola@oldwaystallow.com" class="btn btn--ghost">hola@oldwaystallow.com</a>
+          <a href="mailto:beeftallow17@gmail.com" class="btn btn--ghost">beeftallow17@gmail.com</a>
         </div>
       </div>
     </section>
@@ -260,6 +260,49 @@
       <button class="btn btn--ghost btn--block" id="clearCartButton">Vaciar carrito</button>
     </footer>
   </aside>
+
+  <!-- ============ MODAL: FINALIZAR PEDIDO ============ -->
+  <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderTitle" aria-hidden="true" hidden>
+    <header class="modal__head">
+      <h2 id="orderTitle">Finalizar pedido</h2>
+      <button class="icon-button" id="orderClose" type="button" aria-label="Cerrar formulario">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="modal__body">
+      <form class="order-form" id="orderForm">
+        <p class="order-form__intro">Completa tus datos y enviaremos el pedido. Total: <strong id="orderTotal">$0</strong></p>
+
+        <label class="field">
+          <span class="field__label">Nombre</span>
+          <input class="field__input" id="fieldName" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Correo</span>
+          <input class="field__input" id="fieldEmail" name="correo" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Teléfono</span>
+          <input class="field__input" id="fieldPhone" name="telefono" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required />
+        </label>
+
+        <p class="order-form__legal">Esta información será utilizada para localizar y asignar su pedido.</p>
+
+        <button type="submit" class="btn btn--primary btn--block" id="orderSubmit">Enviar pedido</button>
+        <button type="button" class="btn btn--ghost btn--block" id="orderCancel">Cancelar</button>
+      </form>
+
+      <div class="order-success" id="orderSuccess" hidden>
+        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+        <h3>¡Pedido enviado!</h3>
+        <p>Gracias, recibimos tu pedido. Nos pondremos en contacto para coordinar la entrega.</p>
+        <button type="button" class="btn btn--primary btn--block" id="orderSuccessClose">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast -->
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
