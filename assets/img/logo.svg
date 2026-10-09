@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OldWays Tallow">
+  <rect width="64" height="64" rx="14" fill="#3a2417"/>
+  <path d="M32 12c7 10 13 16.5 13 24a13 13 0 1 1-26 0c0-7.5 6-14 13-24z" fill="#e6b25c"/>
+  <circle cx="32" cy="37" r="6.5" fill="#fff8ec"/>
+</svg>

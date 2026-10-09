@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OldWays Tallow — Grasa animal artesanal para cocinar</title>
+  <meta name="description" content="OldWays Tallow: sebo de res, manteca de cerdo, grasa de pato y más. Grasas animales 100% naturales, artesanales y sin aditivos para cocinar con sabor de siempre." />
+  <meta name="theme-color" content="#3a2417" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+
+  <meta property="og:title" content="OldWays Tallow — Grasa animal artesanal para cocinar" />
+  <meta property="og:description" content="Grasas animales 100% naturales y artesanales. Cocina con el sabor de siempre." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/hero.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#inicio">Saltar al contenido</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="OldWays Tallow, ir al inicio">
+        <img src="assets/img/logo.svg" alt="" class="brand__mark" width="40" height="40" />
+        <span class="brand__text">
+          <strong>OldWays</strong>
+          <small>Tallow</small>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#inicio" class="nav__link is-active">Inicio</a>
+        <a href="#productos" class="nav__link">Productos</a>
+        <a href="#nosotros" class="nav__link">Nosotros</a>
+        <a href="#contacto" class="nav__link">Contacto</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="cart-button" id="cartButton" aria-label="Abrir carrito" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="20" r="1.6" /><circle cx="18" cy="20" r="1.6" />
+            <path d="M2.5 3h2.2l2.3 12.2a2 2 0 0 0 2 1.6h8.3a2 2 0 0 0 2-1.6L21 7H6" />
+          </svg>
+          <span class="cart-button__label">Carrito</span>
+          <span class="cart-badge" id="cartBadge" hidden>0</span>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a href="#inicio">Inicio</a>
+    <a href="#productos">Productos</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+
+  <main>
+    <!-- ============ INICIO / BANNER ============ -->
+    <section class="hero" id="inicio">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <span class="eyebrow">Grasa animal artesanal</span>
+          <h1 class="hero__title">Cocina con el <em>sabor de siempre</em></h1>
+          <p class="hero__lead">
+            Grasas animales 100% naturales, renderizadas a fuego lento y sin aditivos.
+            Para freír, rostizar y hornear con un sabor que la industria olvidó.
+          </p>
+          <div class="hero__cta">
+            <a href="#productos" class="btn btn--primary">Ver productos</a>
+            <a href="#nosotros" class="btn btn--ghost">Conócenos</a>
+          </div>
+          <ul class="hero__features">
+            <li><span aria-hidden="true">✓</span> Sin conservantes</li>
+            <li><span aria-hidden="true">✓</span> Alto punto de humeo</li>
+            <li><span aria-hidden="true">✓</span> Producción local</li>
+          </ul>
+        </div>
+        <div class="hero__media">
+          <div class="hero__blob" aria-hidden="true"></div>
+          <img src="assets/img/hero.svg" alt="Tarro de sebo de res OldWays Tallow" class="hero__img" width="600" height="600" />
+          <div class="hero__price-tag">
+            <span>Desde</span>
+            <strong>$11.90</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TIRA DE BENEFICIOS ============ -->
+    <section class="marquee" aria-label="Características">
+      <div class="marquee__track">
+        <span>100% natural</span><span aria-hidden="true">•</span>
+        <span>Sin aditivos</span><span aria-hidden="true">•</span>
+        <span>Punto de humeo alto</span><span aria-hidden="true">•</span>
+        <span>Keto y paleo</span><span aria-hidden="true">•</span>
+        <span>Producción artesanal</span><span aria-hidden="true">•</span>
+        <span>Envío a todo el país</span><span aria-hidden="true">•</span>
+        <span>100% natural</span><span aria-hidden="true">•</span>
+        <span>Sin aditivos</span><span aria-hidden="true">•</span>
+        <span>Punto de humeo alto</span><span aria-hidden="true">•</span>
+        <span>Keto y paleo</span><span aria-hidden="true">•</span>
+        <span>Producción artesanal</span><span aria-hidden="true">•</span>
+        <span>Envío a todo el país</span><span aria-hidden="true">•</span>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTOS ============ -->
+    <section class="section" id="productos">
+      <div class="container">
+        <header class="section__head">
+          <span class="eyebrow">Nuestra selección</span>
+          <h2>Elige tu grasa</h2>
+          <p>Cada tarro se prepara en tandas pequeñas y se envasa a mano. Agrega tus favoritos al carrito.</p>
+        </header>
+
+        <div class="products" id="productGrid" aria-live="polite"></div>
+        <noscript><p class="noscript">Activa JavaScript para ver los productos y usar el carrito.</p></noscript>
+      </div>
+    </section>
+
+    <!-- ============ NOSOTROS / INFORMACIÓN ============ -->
+    <section class="section section--alt" id="nosotros">
+      <div class="container about">
+        <div class="about__media">
+          <img src="assets/img/manteca-cerdo.svg" alt="Tarro de manteca de cerdo OldWays" width="600" height="600" loading="lazy" />
+        </div>
+        <div class="about__content">
+          <span class="eyebrow">Sobre nosotros</span>
+          <h2>Volver a lo que funcionaba</h2>
+          <p>
+            <strong>OldWays Tallow</strong> nació de una idea sencilla: antes de los aceites refinados,
+            las cocinas se construían sobre grasas animales. Recuperamos esa tradición con un producto
+            limpio, trazable y rendidor.
+          </p>
+          <p>
+            Trabajamos con pequeños productores locales, renderizamos a baja temperatura y filtramos
+            cada tanda para conservar el sabor y la estabilidad. Nada más: sin colorantes, sin
+            aromas artificiales y sin conservantes.
+          </p>
+
+          <div class="stats">
+            <div class="stat"><strong>+12.000</strong><span>tarros entregados</span></div>
+            <div class="stat"><strong>4,9/5</strong><span>valoración media</span></div>
+            <div class="stat"><strong>100%</strong><span>ingrediente único</span></div>
+          </div>
+
+          <div class="values">
+            <article class="value">
+              <h3>Trazabilidad</h3>
+              <p>Sabemos de qué animal y de qué granja viene cada lote.</p>
+            </article>
+            <article class="value">
+              <h3>Artesanal</h3>
+              <p>Tandas pequeñas, envasado a mano y control de calidad uno a uno.</p>
+            </article>
+            <article class="value">
+              <h3>Cocina real</h3>
+              <p>Ideal para freír, sofreír, rostizar y hornear sin que se queme.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESO ============ -->
+    <section class="section" id="proceso">
+      <div class="container">
+        <header class="section__head">
+          <span class="eyebrow">Cómo lo hacemos</span>
+          <h2>Del campo al tarro</h2>
+        </header>
+        <ol class="steps">
+          <li class="step"><span class="step__num">1</span><h3>Selección</h3><p>Elegimos grasas de animales de pastoreo y granjas locales.</p></li>
+          <li class="step"><span class="step__num">2</span><h3>Renderizado</h3><p>Fundimos a baja temperatura para no alterar el sabor.</p></li>
+          <li class="step"><span class="step__num">3</span><h3>Filtrado</h3><p>Filtramos hasta obtener una textura limpia y estable.</p></li>
+          <li class="step"><span class="step__num">4</span><h3>Envasado</h3><p>Se llena y etiqueta a mano. Listo para tu cocina.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO / CTA ============ -->
+    <section class="section cta" id="contacto">
+      <div class="container cta__inner">
+        <div>
+          <h2>¿Listo para cocinar distinto?</h2>
+          <p>Haz tu pedido hoy o escríbenos para pedidos al por mayor.</p>
+        </div>
+        <div class="cta__actions">
+          <a href="#productos" class="btn btn--primary">Comprar ahora</a>
+          <a href="mailto:hola@oldwaystallow.com" class="btn btn--ghost">hola@oldwaystallow.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/logo.svg" alt="" width="36" height="36" />
+        <div>
+          <strong>OldWays Tallow</strong>
+          <p>Grasa animal artesanal para cocinar.</p>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Tienda</h3>
+        <a href="#productos">Productos</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#proceso">Proceso</a>
+      </div>
+      <div class="footer-col">
+        <h3>Ayuda</h3>
+        <a href="#contacto">Contacto</a>
+        <a href="#productos">Envíos y devoluciones</a>
+        <a href="#nosotros">Preguntas frecuentes</a>
+      </div>
+      <div class="footer-col">
+        <h3>Síguenos</h3>
+        <a href="#contacto">Instagram</a>
+        <a href="#contacto">TikTok</a>
+        <a href="#contacto">Facebook</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> OldWays Tallow. Todos los derechos reservados.</span>
+      <span>Hecho a mano, con grasa de verdad.</span>
+    </div>
+  </footer>
+
+  <!-- ============ CARRITO (drawer) ============ -->
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+    <header class="cart-drawer__head">
+      <h2 id="cartTitle">Tu carrito</h2>
+      <button class="icon-button" id="cartClose" aria-label="Cerrar carrito">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="cart-drawer__body" id="cartItems"></div>
+
+    <footer class="cart-drawer__foot">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">$0.00</strong>
+      </div>
+      <p class="cart-note">Envío calculado al finalizar. Impuestos incluidos.</p>
+      <button class="btn btn--primary btn--block" id="checkoutButton">Finalizar pedido</button>
+      <button class="btn btn--ghost btn--block" id="clearCartButton">Vaciar carrito</button>
+    </footer>
+  </aside>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
