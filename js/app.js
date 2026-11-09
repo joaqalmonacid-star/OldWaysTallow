@@ -308,6 +308,7 @@
         `Total: ${total}\n\n` +
         `Nos pondremos en contacto contigo para coordinar la entrega.\n\nEquipo OldWays Tallow`;
     }
+    if (fsUrl) fsUrl.value = location.href;
     if (fsNext) {
       const back =
         location.protocol.startsWith("http")
@@ -342,6 +343,7 @@
   const orderNumberOut = $("#orderNumberOut");
   const fsSubject = $("#fsSubject");
   const fsNext = $("#fsNext");
+  const fsUrl = $("#fsUrl");
   const fsAutoresponse = $("#fsAutoresponse");
   const fsOrderNumber = $("#fsOrderNumber");
   const fsOrderLines = $("#fsOrderLines");
