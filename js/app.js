@@ -324,7 +324,7 @@
       try { data = await res.json(); } catch { /* respuesta sin JSON */ }
 
       if (!res.ok || !data.ok) {
-        throw new Error(data.error || `http_${res.status}`);
+        throw new Error(data.error || `HTTP ${res.status}`);
       }
 
       cart = [];
@@ -333,8 +333,9 @@
       showOrderSuccess(orderNumber, data.customerEmailSent !== false);
     } catch (err) {
       console.error("No se pudo enviar el pedido:", err);
+      const detail = err?.message || "error de red";
       setOrderError(
-        "No pudimos enviar tu pedido. Revisa tu conexión e inténtalo de nuevo. " +
+        `No pudimos enviar tu pedido (${detail}). Revisa tu conexión e inténtalo de nuevo. ` +
         `Si el problema continúa, escríbenos a ${CONTACT_EMAIL}.`
       );
     } finally {
