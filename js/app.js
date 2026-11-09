@@ -15,10 +15,8 @@
       id: "grasa-res",
       name: "Grasa de Res",
       desc: "Nuestra receta original. Sabor neutro y punto de humeo alto, ideal para freír y rostizar.",
-      price: 3990,
+      price: 4990,
       weight: "150 g",
-      rating: 4.9,
-      reviews: 214,
       badge: "Más vendido",
       image: "assets/img/grasa-res.jpg",
     },
@@ -26,10 +24,8 @@
       id: "grasa-res-oregano",
       name: "Grasa de Res (Orégano)",
       desc: "Con orégano seleccionado. Un aroma mediterráneo perfecto para carnes, papas y panes.",
-      price: 3990,
+      price: 4990,
       weight: "150 g",
-      rating: 4.8,
-      reviews: 168,
       badge: null,
       image: "assets/img/grasa-res-oregano.jpg",
     },
@@ -37,10 +33,8 @@
       id: "grasa-res-merken",
       name: "Grasa de Res (Merkén)",
       desc: "Con merkén ahumado. El toque picante y aromático de la cocina mapuche en tus platos.",
-      price: 3990,
+      price: 4990,
       weight: "150 g",
-      rating: 4.9,
-      reviews: 92,
       badge: "Nuevo",
       image: "assets/img/grasa-res-merken.jpg",
     },
@@ -96,7 +90,6 @@
 
   function productCard(p) {
     const tagClass = p.badge === "Premium" || p.badge === "Edición limitada" ? "product__tag--gold" : "";
-    const stars = "★".repeat(Math.round(p.rating)) + "☆".repeat(5 - Math.round(p.rating));
     return `
       <article class="product" data-id="${p.id}">
         <div class="product__media">
@@ -108,7 +101,7 @@
           <p class="product__desc">${escapeHtml(p.desc)}</p>
           <div class="product__meta">
             <span class="product__weight">${escapeHtml(p.weight)}</span>
-            <span class="product__stars" aria-label="Valoración ${p.rating} de 5">${stars}<small>(${p.reviews})</small></span>
+            <span class="product__made">Hecho por pedido</span>
           </div>
           <div class="product__footer">
             <span class="product__price">${money(p.price)}<small>IVA incluido</small></span>
