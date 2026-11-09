@@ -1,11 +1,19 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "oldways-tallow",
+  "main": "src/worker.js",
   "compatibility_date": "2026-10-23",
   "observability": {
     "enabled": true
   },
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "STORE_EMAIL": "beeftallow17@gmail.com",
+    "SENDER_EMAIL": "beeftallow17@gmail.com",
+    "SENDER_NAME": "OldWays Tallow"
   }
 }

@@ -40,20 +40,37 @@ OldWaysTallow/
 - El contador del encabezado muestra la cantidad total de unidades.
 - **Finalizar pedido** abre un formulario que pide **Nombre, Correo y Teléfono**
   (con la nota: *"Esta información será utilizada para localizar y asignar su pedido."*).
-- Al enviarlo se genera un **número de orden** (`OW-AAAAMMDD-XXXX`) y se envían
-  **dos correos** mediante [FormSubmit](https://formsubmit.co):
-  1. A **beeftallow17@gmail.com**: recepción de la orden, con el número de orden,
-     el detalle del pedido y el **correo del cliente** (queda como *Responder a*).
-  2. Al **correo que escribió el cliente**: un agradecimiento automático con el
-     número de orden y el resumen de su compra.
-- Tras enviar, el sitio vuelve a la página y muestra la confirmación con el número de orden.
+- Al enviarlo se genera un **número de orden** (`OW-AAAAMMDD-XXXX`) y el sitio
+  llama a `POST /api/order`, un endpoint del Worker de Cloudflare (`src/worker.js`).
+- El Worker envía **dos correos transaccionales con [Brevo](https://www.brevo.com/)**:
+  1. A **beeftallow17@gmail.com**: recepción de la orden, con número, detalle,
+     total y datos del cliente (el correo del cliente queda como *Responder a*).
+  2. Al **correo que escribió el cliente**: agradecimiento con número de orden,
+     detalle del pedido y total.
+- Si falla el correo a la tienda, el pedido se rechaza y el cliente ve un error.
+  Si solo falla el correo al cliente, el pedido queda registrado y se avisa en pantalla.
+- La API key de Brevo **nunca** se expone en el navegador: vive como secreto
+  `BREVO_API_KEY` en Cloudflare.
 
-> **Importante (una sola vez):** FormSubmit envía un correo de *"Activate Form"* a
-> **beeftallow17@gmail.com**. Hay que abrirlo y pulsar el enlace para activar el envío.
->
-> El envío automático usa el **POST nativo con reCAPTCHA activado**, porque la
-> auto-respuesta de FormSubmit **no funciona con AJAX ni con el reCAPTCHA desactivado**.
-> Por eso el sitio debe verse **servido por internet** (GitHub Pages), no como archivo local.
+### Configurar Brevo (una sola vez)
+
+1. Crear una cuenta en [Brevo](https://www.brevo.com/) y entrar a
+   **Settings → SMTP & API → API Keys**.
+2. Crear una API key (v3) y copiarla.
+3. Verificar el remitente en **Senders & IP → Senders → Add a sender**:
+   `beeftallow17@gmail.com`. Brevo enviará un correo de verificación a esa
+   dirección; hay que abrirlo y confirmar.
+4. Guardar la API key como secreto en Cloudflare:
+
+   ```bash
+   npx wrangler secret put BREVO_API_KEY
+   ```
+
+5. (Recomendado) Verificar un dominio propio en Brevo para mejorar la
+   entregabilidad. Mientras no haya dominio, se envía desde
+   `beeftallow17@gmail.com`.
+
+> El endpoint está en `src/worker.js` y se publica con `npx wrangler deploy`.
 
 ## Personalización
 
@@ -74,7 +91,8 @@ El proyecto ya está creado como Worker con assets estáticos:
 
 - **URL:** https://oldways-tallow.joaq-almonacid.workers.dev
 - **Configuración:** `wrangler.jsonc`
-- **Exclusiones:** `.assetsignore` (no publica `.git`, `README.md`, `scripts/`, etc.)
+- **API de pedidos:** `src/worker.js` (`POST /api/order` → Brevo)
+- **Exclusiones:** `.assetsignore` (no publica `.git`, `README.md`, `scripts/`, `src/`, etc.)
 
 Para publicar una nueva versión:
 
@@ -86,3 +104,6 @@ La primera vez hay que iniciar sesión con `npx wrangler login`. El comando sube
 solo los archivos del sitio y actualiza la misma URL. Si se quiere un dominio
 propio (por ejemplo `oldwaystallow.cl`), se agrega desde el panel de Cloudflare
 en **Workers & Pages → oldways-tallow → Settings → Domains & Routes**.
+
+> Si se agrega un dominio propio, hay que sumarlo a `ALLOWED_ORIGINS` en
+> `src/worker.js` para que el navegador pueda llamar al endpoint.

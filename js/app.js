@@ -9,6 +9,12 @@
   const STORAGE_KEY = "oldways-cart-v1";
   const CONTACT_EMAIL = "beeftallow17@gmail.com";
 
+  // Cloudflare (workers.dev o dominio propio) usa el endpoint relativo.
+  // GitHub Pages no tiene backend, así que apunta al Worker de producción.
+  const ORDER_API = location.hostname.endsWith("github.io")
+    ? "https://oldways-tallow.joaq-almonacid.workers.dev/api/order"
+    : "/api/order";
+
   /* ------------------- Catálogo ------------------- */
   const PRODUCTS = [
     {
@@ -210,15 +216,6 @@
   }
 
   /* ------------------- Pedido / formulario ------------------- */
-  function orderLines() {
-    return cart
-      .map((it) => {
-        const p = byId(it.id);
-        return `${p.name} (${p.weight}) x${it.qty} — ${money(p.price * it.qty)}`;
-      })
-      .join("\n");
-  }
-
   function makeOrderNumber() {
     const d = new Date();
     const ymd =
@@ -250,6 +247,7 @@
     drawer?.setAttribute("aria-hidden", "true");
 
     orderForm?.reset();
+    setOrderError("");
     if (orderForm) orderForm.hidden = false;
     if (orderSuccess) orderSuccess.hidden = true;
     if (orderTotalEl) orderTotalEl.textContent = money(cartTotal());
@@ -259,8 +257,14 @@
     setTimeout(() => $("#fieldName")?.focus(), 260);
   }
 
-  function showOrderSuccess(orderNumber) {
+  function showOrderSuccess(orderNumber, customerEmailSent = true) {
     if (orderNumberOut) orderNumberOut.textContent = orderNumber || "—";
+    const hint = $("#orderSuccessHint");
+    if (hint) {
+      hint.textContent = customerEmailSent
+        ? "Te enviamos un correo de confirmación a la dirección que indicaste."
+        : "Recibimos tu pedido. No pudimos enviar el correo de confirmación automático, pero nos pondremos en contacto contigo.";
+    }
     if (orderForm) orderForm.hidden = true;
     if (orderSuccess) orderSuccess.hidden = false;
     showModal();
@@ -284,52 +288,58 @@
     btn.innerHTML = on ? "Enviando…" : "Enviar pedido";
   }
 
-  // Se ejecuta justo antes del POST nativo a FormSubmit: rellena los campos
-  // ocultos con el número de orden, el resumen y el mensaje de agradecimiento.
-  function prepareOrder(e) {
-    if (cart.length === 0) { e.preventDefault(); return; }
-    if (!orderForm.checkValidity()) { e.preventDefault(); orderForm.reportValidity(); return; }
-
-    const orderNumber = makeOrderNumber();
-    const total = money(cartTotal());
-    const lines = orderLines();
-    const email = $("#fieldEmail")?.value || "";
-
-    if (fsOrderNumber) fsOrderNumber.value = orderNumber;
-    if (fsOrderLines) fsOrderLines.value = lines;
-    if (fsTotal) fsTotal.value = total;
-    if (fsSubject) fsSubject.value = `Orden ${orderNumber} — ${email}`;
-    if (fsAutoresponse) {
-      fsAutoresponse.value =
-        `¡Gracias por tu compra en OldWays Tallow!\n\n` +
-        `Hemos recibido tu pedido correctamente.\n\n` +
-        `Número de orden: ${orderNumber}\n\n` +
-        `Resumen del pedido:\n${lines}\n\n` +
-        `Total: ${total}\n\n` +
-        `Nos pondremos en contacto contigo para coordinar la entrega.\n\nEquipo OldWays Tallow`;
-    }
-    if (fsUrl) fsUrl.value = location.href;
-    if (fsNext) {
-      const back =
-        location.protocol.startsWith("http")
-          ? `${location.origin}${location.pathname}?pedido=ok&orden=${encodeURIComponent(orderNumber)}`
-          : "";
-      fsNext.value = back;
-      fsNext.disabled = !back;
-    }
-
-    setOrderSubmitting(true);
+  function setOrderError(message) {
+    const el = $("#orderError");
+    if (!el) return;
+    el.textContent = message || "";
+    el.hidden = !message;
   }
 
-  function handleOrderReturn() {
-    const params = new URLSearchParams(location.search);
-    if (params.get("pedido") !== "ok") return;
-    const orderNumber = params.get("orden") || "";
-    cart = [];
-    renderCart();
-    saveCart();
-    showOrderSuccess(orderNumber);
-    history.replaceState(null, "", location.pathname + location.hash);
+  async function submitOrder(e) {
+    e.preventDefault();
+    if (cart.length === 0) return;
+    if (!orderForm.checkValidity()) { orderForm.reportValidity(); return; }
+
+    const name = $("#fieldName")?.value.trim() || "";
+    const email = $("#fieldEmail")?.value.trim() || "";
+    const phone = $("#fieldPhone")?.value.trim() || "";
+    const company = $("#fieldCompany")?.value || "";
+    const orderNumber = makeOrderNumber();
+    const items = cart.map((it) => {
+      const p = byId(it.id);
+      return { id: p.id, name: p.name, weight: p.weight, qty: it.qty, price: p.price };
+    });
+
+    setOrderError("");
+    setOrderSubmitting(true);
+
+    try {
+      const res = await fetch(ORDER_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, company, orderNumber, items }),
+      });
+
+      let data = {};
+      try { data = await res.json(); } catch { /* respuesta sin JSON */ }
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || `http_${res.status}`);
+      }
+
+      cart = [];
+      renderCart();
+      saveCart();
+      showOrderSuccess(orderNumber, data.customerEmailSent !== false);
+    } catch (err) {
+      console.error("No se pudo enviar el pedido:", err);
+      setOrderError(
+        "No pudimos enviar tu pedido. Revisa tu conexión e inténtalo de nuevo. " +
+        `Si el problema continúa, escríbenos a ${CONTACT_EMAIL}.`
+      );
+    } finally {
+      setOrderSubmitting(false);
+    }
   }
 
   /* ------------------- UI: drawer, toast, menú ------------------- */
@@ -341,13 +351,6 @@
   const orderSuccess = $("#orderSuccess");
   const orderTotalEl = $("#orderTotal");
   const orderNumberOut = $("#orderNumberOut");
-  const fsSubject = $("#fsSubject");
-  const fsNext = $("#fsNext");
-  const fsUrl = $("#fsUrl");
-  const fsAutoresponse = $("#fsAutoresponse");
-  const fsOrderNumber = $("#fsOrderNumber");
-  const fsOrderLines = $("#fsOrderLines");
-  const fsTotal = $("#fsTotal");
   let toastTimer;
 
   function openCart() {
@@ -422,7 +425,7 @@
   $("#orderClose")?.addEventListener("click", closeOrderForm);
   $("#orderCancel")?.addEventListener("click", closeOrderForm);
   $("#orderSuccessClose")?.addEventListener("click", closeOrderForm);
-  orderForm?.addEventListener("submit", prepareOrder);
+  orderForm?.addEventListener("submit", submitOrder);
 
   overlay?.addEventListener("click", () => {
     if (orderModal && orderModal.classList.contains("is-open")) closeOrderForm();
@@ -472,6 +475,5 @@
   renderCart();
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-  handleOrderReturn();
   onScroll();
 })();
