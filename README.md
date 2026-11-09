@@ -6,7 +6,7 @@ Sitio web de **OldWays Tallow**, marca de grasa animal artesanal para cocinar
 Sitio estático (HTML + CSS + JavaScript), sin dependencias ni build. Se puede
 publicar directamente en **GitHub Pages** o en **Cloudflare**.
 
-- **Producción (Cloudflare):** https://oldways-tallow.joaq-almonacid.workers.dev
+- **Producción (Cloudflare):** https://oldwaystallow.joaq-almonacid.workers.dev
 - **Respaldo (GitHub Pages):** https://joaqalmonacid-star.github.io/OldWaysTallow/
 
 ## Estructura
@@ -89,7 +89,7 @@ OldWaysTallow/
 
 El proyecto ya está creado como Worker con assets estáticos:
 
-- **URL:** https://oldways-tallow.joaq-almonacid.workers.dev
+- **URL:** https://oldwaystallow.joaq-almonacid.workers.dev
 - **Configuración:** `wrangler.jsonc`
 - **API de pedidos:** `src/worker.js` (`POST /api/order` → Brevo)
 - **Exclusiones:** `.assetsignore` (no publica `.git`, `README.md`, `scripts/`, `src/`, etc.)
@@ -103,7 +103,7 @@ npx wrangler deploy
 La primera vez hay que iniciar sesión con `npx wrangler login`. El comando sube
 solo los archivos del sitio y actualiza la misma URL. Si se quiere un dominio
 propio (por ejemplo `oldwaystallow.cl`), se agrega desde el panel de Cloudflare
-en **Workers & Pages → oldways-tallow → Settings → Domains & Routes**.
+en **Workers & Pages → oldwaystallow → Settings → Domains & Routes**.
 
 > Si se agrega un dominio propio, hay que sumarlo a `ALLOWED_ORIGINS` en
 > `src/worker.js` para que el navegador pueda llamar al endpoint.

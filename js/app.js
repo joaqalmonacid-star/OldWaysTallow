@@ -12,7 +12,7 @@
   // Cloudflare (workers.dev o dominio propio) usa el endpoint relativo.
   // GitHub Pages no tiene backend, así que apunta al Worker de producción.
   const ORDER_API = location.hostname.endsWith("github.io")
-    ? "https://oldways-tallow.joaq-almonacid.workers.dev/api/order"
+    ? "https://oldwaystallow.joaq-almonacid.workers.dev/api/order"
     : "/api/order";
 
   /* ------------------- Catálogo ------------------- */

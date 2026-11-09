@@ -7,6 +7,7 @@ const MAX_BODY_BYTES = 20_000;
 const MAX_ITEMS = 20;
 
 const ALLOWED_ORIGINS = new Set([
+  "https://oldwaystallow.joaq-almonacid.workers.dev",
   "https://oldways-tallow.joaq-almonacid.workers.dev",
   "https://joaqalmonacid-star.github.io",
 ]);
