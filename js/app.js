@@ -20,7 +20,7 @@
     {
       id: "grasa-res",
       name: "Grasa de Res",
-      desc: "Nuestra receta original. Sabor neutro y punto de humeo alto, ideal para freír y rostizar.",
+      desc: "Nuestra receta original. Sabor neutro y punto de humo alto, ideal para freír y rostizar.",
       price: 4990,
       weight: "150 g",
       badge: "Más vendido",
