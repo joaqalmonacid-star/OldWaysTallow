@@ -1,0 +1,12 @@
+# Archivos internos que no deben publicarse en Cloudflare
+.git
+.gitignore
+.assetsignore
+.wrangler
+.dev.vars*
+.env*
+README.md
+scripts
+wrangler.jsonc
+node_modules
+dist

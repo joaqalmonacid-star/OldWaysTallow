@@ -4,7 +4,10 @@ Sitio web de **OldWays Tallow**, marca de grasa animal artesanal para cocinar
 (grasa de res, con orégano y con merkén), en formato de 150 g.
 
 Sitio estático (HTML + CSS + JavaScript), sin dependencias ni build. Se puede
-publicar directamente en GitHub Pages.
+publicar directamente en **GitHub Pages** o en **Cloudflare**.
+
+- **Producción (Cloudflare):** https://oldways-tallow.joaq-almonacid.workers.dev
+- **Respaldo (GitHub Pages):** https://joaqalmonacid-star.github.io/OldWaysTallow/
 
 ## Estructura
 
@@ -13,15 +16,17 @@ OldWaysTallow/
 ├── index.html              # Página única con todas las secciones
 ├── css/styles.css          # Estilos (diseño responsive)
 ├── js/app.js               # Catálogo, carrito, drawer y navegación
-├── assets/img/             # Ilustraciones SVG generadas
-└── scripts/
-    └── generate-assets.mjs # Generador de las ilustraciones SVG
+├── assets/img/             # Fotos del producto, logo y favicon
+├── scripts/
+│   └── generate-assets.mjs # Generador de assets auxiliares
+├── wrangler.jsonc          # Configuración del deploy en Cloudflare
+└── .assetsignore           # Archivos internos excluidos del sitio publicado
 ```
 
 ## Secciones
 
 - **Inicio** — banner horizontal con el producto, título, CTA y beneficios.
-- **Productos** — selección con foto, nombre, descripción, peso, valoración y precio.
+- **Productos** — selección con foto, nombre, descripción, peso, precio y la etiqueta "Hecho por pedido".
 - **Carrito** — panel lateral que recibe los productos añadidos (agregar,
   cambiar cantidad, eliminar, total y finalizar pedido por correo).
 - **Nosotros** — información de la marca, estadísticas y valores.
@@ -62,3 +67,22 @@ OldWaysTallow/
 1. Sube los cambios a la rama `main`.
 2. En GitHub: **Settings → Pages → Source: Deploy from a branch → main / (root)**.
 3. El sitio quedará en `https://joaqalmonacid-star.github.io/OldWaysTallow/`.
+
+## Publicar en Cloudflare
+
+El proyecto ya está creado como Worker con assets estáticos:
+
+- **URL:** https://oldways-tallow.joaq-almonacid.workers.dev
+- **Configuración:** `wrangler.jsonc`
+- **Exclusiones:** `.assetsignore` (no publica `.git`, `README.md`, `scripts/`, etc.)
+
+Para publicar una nueva versión:
+
+```bash
+npx wrangler deploy
+```
+
+La primera vez hay que iniciar sesión con `npx wrangler login`. El comando sube
+solo los archivos del sitio y actualiza la misma URL. Si se quiere un dominio
+propio (por ejemplo `oldwaystallow.cl`), se agrega desde el panel de Cloudflare
+en **Workers & Pages → oldways-tallow → Settings → Domains & Routes**.
