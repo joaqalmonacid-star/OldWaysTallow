@@ -1,7 +1,7 @@
 # OldWays Tallow
 
 Sitio web de **OldWays Tallow**, marca de grasa animal artesanal para cocinar
-(grasa de res, con orégano y con merkén), en formato de 150 g.
+(grasa de res, con orégano y con merkén), en formato de 200 ml.
 
 Sitio estático (HTML + CSS + JavaScript), sin dependencias ni build. Se puede
 publicar directamente en **GitHub Pages** o en **Cloudflare**.

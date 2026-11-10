@@ -277,7 +277,7 @@ function emailLayout({ title, intro, orderNumber, rowsHtml, total, name, email, 
       </div>
 
       <div style="padding:16px 24px;border-top:1px solid #e7dccb;font-size:12px;color:#8a7a63;line-height:1.6;">
-        OldWays Tallow · Proyecto inicial de estudiantes · 150 g por tarro<br>
+        OldWays Tallow · Proyecto inicial de estudiantes · 200 ml por tarro<br>
         Recibido el ${escapeHtml(when)} (hora de Chile)
       </div>
     </div>
